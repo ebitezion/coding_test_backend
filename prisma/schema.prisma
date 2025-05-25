@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+enum StoreCategory {
+  SUSHI
+  UNAGI
+  TEMPURA
+  TONKATSU
+  YAKITORI
+  SUKIYAKI
+  SOBA
+  RAMEN
+  YAKISOBA
+  OKONOMIYAKI
+  DONBURI
+  ODEN
+  KAISEKI
+  HAMBAGU
+  TEPPANYAKI
+  CURRY
+  YAKINIKU
+  NABE
+  CAFE
+  IZAKAYA
+  OTHER
+}
+
+model Restaurant {
+  id           String       @id @default(uuid())
+  name         String
+  desc         String
+  category     StoreCategory
+  city         String
+  rating       Float
+  ratingCount  Int          @map("rating_count")
+  priceRange   String       @map("price_range")
+  images       String[]     // PostgreSQL array of text
+  featuredText String?      // extracted from featured.text
+  featuredIcon String?      // extracted from featured.icon
+  isFavorite   Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+}
